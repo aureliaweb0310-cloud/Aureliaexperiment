@@ -1,0 +1,1045 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURELIA — Snack Your Way Into Creativity</title>
+<meta name="description" content="Aurelia is a creative studio disguised as a snack attack.">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --cream: #fff3d9;
+  --ink: #24142e;
+  --pink: #ff5c9c;
+  --orange: #ff783b;
+  --lime: #c8ff4d;
+  --blue: #67d8ff;
+  --purple: #9e75ff;
+  --yellow: #ffe85b;
+  --white: #fffdf8;
+  --font: 'Space Grotesk', sans-serif;
+  --display: 'Syne', sans-serif;
+  --mono: 'DM Mono', monospace;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--cream);
+  color: var(--ink);
+  overflow-x: hidden;
+  cursor: crosshair;
+}
+
+button, a {
+  cursor: pointer;
+}
+
+button {
+  font-family: inherit;
+}
+
+::selection {
+  background: var(--lime);
+  color: var(--ink);
+}
+
+.noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .035;
+  z-index: 999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+
+/* NAV */
+
+nav {
+  padding: 19px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--ink);
+  background: var(--cream);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-family: var(--display);
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -2px;
+}
+
+.logo span {
+  color: var(--pink);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.nav-right a {
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.nav-right a:hover {
+  color: var(--pink);
+}
+
+.live-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #6cc35a;
+  border-radius: 50%;
+  margin-right: 6px;
+  box-shadow: 0 0 10px #6cc35a;
+}
+
+/* HERO */
+
+.hero {
+  min-height: 88vh;
+  padding: 55px 5% 45px;
+  background: var(--pink);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-stamp {
+  font-family: var(--mono);
+  font-size: 11px;
+  border: 1.5px solid var(--ink);
+  padding: 7px 12px;
+  border-radius: 50px;
+  width: fit-content;
+  transform: rotate(-4deg);
+  margin-bottom: 24px;
+}
+
+.hero h1 {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(60px, 12vw, 165px);
+  letter-spacing: -0.09em;
+  line-height: .83;
+  max-width: 950px;
+  position: relative;
+  z-index: 2;
+}
+
+.hero h1 .outlined {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--ink);
+}
+
+.hero-bottom {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  margin-top: 45px;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-bottom p {
+  max-width: 300px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.start-btn {
+  border: 2px solid var(--ink);
+  background: var(--lime);
+  padding: 15px 22px;
+  font-weight: 800;
+  border-radius: 50px;
+  transition: .2s;
+  box-shadow: 4px 4px 0 var(--ink);
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.start-btn:hover {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+/* FLOATING SNACKS */
+
+.floating {
+  position: absolute;
+  font-size: clamp(45px, 8vw, 100px);
+  filter: drop-shadow(5px 7px 0 rgba(36,20,46,.12));
+  animation: float 4s ease-in-out infinite;
+  user-select: none;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.floating:hover {
+  animation: spin 0.6s ease;
+}
+
+.snack1 { top: 12%; right: 10%; animation-delay: 0s; }
+.snack2 { top: 36%; right: 23%; animation-delay: .5s; }
+.snack3 { bottom: 9%; right: 8%; animation-delay: 1s; }
+.snack4 { top: 65%; left: 6%; animation-delay: 1.4s; }
+
+@keyframes float {
+  0%,100% { transform: translateY(0) rotate(-8deg); }
+  50% { transform: translateY(-22px) rotate(8deg); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg) scale(1.3); }
+}
+
+/* MARQUEE */
+
+.marquee {
+  background: var(--ink);
+  color: var(--lime);
+  padding: 14px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 20px;
+}
+
+.marquee-track {
+  display: inline-block;
+  animation: marquee 22s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* SECTION COMMON */
+
+.section {
+  padding: 100px 5%;
+}
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  letter-spacing: .5px;
+}
+
+.section-title {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(42px, 7vw, 92px);
+  letter-spacing: -.07em;
+  line-height: .94;
+}
+
+/* VENDING MACHINE */
+
+.vending-section {
+  background: var(--blue);
+}
+
+.vending-intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 20px;
+  margin-bottom: 50px;
+}
+
+.vending-intro p {
+  max-width: 280px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.vending-machine {
+  background: #e5faff;
+  border: 3px solid var(--ink);
+  border-radius: 24px;
+  max-width: 900px;
+  margin: auto;
+  padding: 24px;
+  box-shadow: 12px 12px 0 var(--ink);
+}
+
+.machine-top {
+  background: var(--purple);
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.machine-top strong {
+  font-family: var(--display);
+  font-size: 23px;
+  font-weight: 900;
+}
+
+.snack-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.snack-card {
+  border: 2px solid var(--ink);
+  border-radius: 15px;
+  padding: 15px;
+  text-align: center;
+  position: relative;
+  transition: transform .25s, box-shadow .25s;
+  min-height: 195px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.snack-card:nth-child(1) { background: var(--pink); }
+.snack-card:nth-child(2) { background: var(--yellow); }
+.snack-card:nth-child(3) { background: var(--lime); }
+.snack-card:nth-child(4) { background: #ff9f5c; }
+.snack-card:nth-child(5) { background: #c5a6ff; }
+.snack-card:nth-child(6) { background: #ffb5db; }
+
+.snack-card:hover {
+  transform: rotate(-2deg) translateY(-7px);
+  box-shadow: 5px 7px 0 var(--ink);
+}
+
+.snack-emoji {
+  font-size: 55px;
+  transition: transform .3s;
+}
+
+.snack-card:hover .snack-emoji {
+  transform: scale(1.2) rotate(10deg);
+}
+
+.snack-card h3 {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 16px;
+}
+
+.snack-card p {
+  font-family: var(--mono);
+  font-size: 10px;
+}
+
+.snack-number {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+}
+
+.snack-card button {
+  border: 1.5px solid var(--ink);
+  background: var(--white);
+  border-radius: 50px;
+  padding: 8px 12px;
+  font-size: 10px;
+  font-weight: 900;
+  margin: 4px auto 0;
+  width: fit-content;
+}
+
+.machine-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  font-family: var(--mono);
+  font-size: 10px;
+}
+
+/* POPUP SERVICE */
+
+.service-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(36,20,46,.75);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(8px);
+}
+
+.service-popup.active {
+  display: flex;
+}
+
+.popup-card {
+  background: var(--cream);
+  border: 3px solid var(--ink);
+  border-radius: 25px;
+  max-width: 500px;
+  width: 100%;
+  padding: 35px;
+  position: relative;
+  animation: popIn .35s cubic-bezier(.2,1.5,.5,1);
+}
+
+@keyframes popIn {
+  from { transform: scale(.5) rotate(-10deg); opacity: 0; }
+  to { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+.popup-emoji {
+  font-size: 65px;
+  margin-bottom: 15px;
+}
+
+.popup-card h2 {
+  font-family: var(--display);
+  font-size: 40px;
+  font-weight: 900;
+  line-height: .95;
+  letter-spacing: -2px;
+  margin-bottom: 15px;
+}
+
+.popup-card p {
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.popup-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  border: 2px solid var(--ink);
+  background: var(--pink);
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+/* CHOCOLATE SECTION */
+
+.chocolate-section {
+  background: var(--cream);
+  text-align: center;
+}
+
+.chocolate-section .section-title {
+  margin-bottom: 20px;
+}
+
+.chocolate-section > p {
+  font-size: 14px;
+  line-height: 1.7;
+  max-width: 440px;
+  margin: 0 auto 35px;
+}
+
+.chocolate-wrapper {
+  position: relative;
+  max-width: 520px;
+  margin: 30px auto;
+}
+
+.wrapper-foil {
+  background: linear-gradient(135deg,#ff5c9c,#ffb2d1,#ff5c9c);
+  border: 3px solid var(--ink);
+  border-radius: 18px;
+  padding: 30px 15px;
+  box-shadow: 10px 10px 0 var(--ink);
+  transform: rotate(-2deg);
+  transition: .6s;
+  position: relative;
+  z-index: 3;
+}
+
+.wrapper-foil.unwrapped {
+  transform: rotate(-12deg) translateX(-120%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.foil-text {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(35px,8vw,70px);
+  line-height: .9;
+  letter-spacing: -5px;
+}
+
+.foil-sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  margin-top: 15px;
+}
+
+.unwrap-btn {
+  background: var(--lime);
+  border: 2px solid var(--ink);
+  border-radius: 50px;
+  padding: 14px 22px;
+  margin-top: 25px;
+  font-weight: 900;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.unwrap-btn:hover {
+  transform: translate(3px,3px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+.chocolate-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 9px;
+  padding: 25px;
+  opacity: 0;
+  pointer-events: none;
+  transition: .6s;
+}
+
+.chocolate-grid.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.choco {
+  border: 2px solid #211026;
+  border-radius: 8px;
+  background: linear-gradient(145deg,#743d30,#3a1c19);
+  color: #ffdfb1;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: inset 3px 3px 0 rgba(255,255,255,.12);
+  transition: .25s;
+  font-family: var(--mono);
+}
+
+.choco:hover {
+  transform: translateY(-7px) rotate(3deg);
+  background: #9d5a40;
+}
+
+.choco.eaten {
+  transform: scale(.2) rotate(40deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* FORTUNE */
+
+.fortune-section {
+  background: var(--yellow);
+  text-align: center;
+}
+
+.cookie {
+  width: 190px;
+  height: 150px;
+  margin: 35px auto 25px;
+  position: relative;
+  cursor: pointer;
+  transition: .3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 100px;
+}
+
+.cookie:hover {
+  transform: rotate(15deg) scale(1.1);
+}
+
+.fortune-paper {
+  background: var(--white);
+  border: 2px solid var(--ink);
+  padding: 25px;
+  max-width: 450px;
+  margin: auto;
+  transform: rotate(1deg);
+  box-shadow: 7px 7px 0 var(--ink);
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.fortune-btn {
+  margin-top: 25px;
+  background: var(--pink);
+  border: 2px solid var(--ink);
+  border-radius: 50px;
+  padding: 13px 20px;
+  font-weight: 900;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.fortune-btn:hover {
+  transform: translate(3px,3px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+/* CONTACT FRIDGE */
+
+.contact-section {
+  background: var(--lime);
+  padding: 100px 5%;
+}
+
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: center;
+}
+
+.fridge {
+  background: #b6eaff;
+  border: 3px solid var(--ink);
+  border-radius: 25px;
+  padding: 25px;
+  box-shadow: 12px 12px 0 var(--ink);
+  cursor: pointer;
+  transition: .3s;
+}
+
+.fridge:hover {
+  transform: rotate(2deg);
+}
+
+.fridge-door {
+  border: 2px solid var(--ink);
+  border-radius: 18px;
+  padding: 40px 20px;
+  text-align: center;
+  background: linear-gradient(140deg,#d7f4ff,#8ad9ff);
+  min-height: 320px;
+  position: relative;
+}
+
+.fridge-handle {
+  width: 10px;
+  height: 75px;
+  border: 3px solid var(--ink);
+  border-radius: 10px;
+  position: absolute;
+  right: 15px;
+  top: 45%;
+}
+
+.fridge-title {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 35px;
+  line-height: .95;
+  letter-spacing: -2px;
+}
+
+.fridge-items {
+  font-size: 55px;
+  margin-top: 25px;
+}
+
+.fridge-note {
+  background: var(--pink);
+  border: 2px solid var(--ink);
+  padding: 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  transform: rotate(-3deg);
+  width: fit-content;
+  margin: -15px auto 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.contact-text h2 {
+  font-family: var(--display);
+  font-size: clamp(45px,7vw,90px);
+  line-height: .88;
+  font-weight: 900;
+  letter-spacing: -6px;
+}
+
+.contact-text p {
+  margin-top: 20px;
+  line-height: 1.7;
+  font-size: 14px;
+  max-width: 350px;
+}
+
+.contact-btn {
+  display: inline-block;
+  margin-top: 25px;
+  border: 2px solid var(--ink);
+  border-radius: 50px;
+  padding: 14px 22px;
+  background: var(--pink);
+  color: var(--ink);
+  font-weight: 900;
+  text-decoration: none;
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+.contact-btn:hover {
+  transform: translate(3px,3px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+/* CHAOS */
+
+.chaos {
+  position: fixed;
+  pointer-events: none;
+  font-size: 28px;
+  z-index: 9999;
+  animation: chaosPop .8s ease-out forwards;
+}
+
+@keyframes chaosPop {
+  0% { transform: scale(0) rotate(0); opacity: 0; }
+  20% { transform: scale(1.5) rotate(20deg); opacity: 1; }
+  100% { transform: translateY(-100px) rotate(90deg) scale(.3); opacity: 0; }
+}
+
+footer {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 25px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+footer a {
+  color: var(--lime);
+  text-decoration: none;
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+  nav {
+    padding: 15px 5%;
+  }
+
+  .logo { font-size: 24px; }
+
+  .nav-right {
+    gap: 13px;
+  }
+
+  .nav-right a {
+    font-size: 10px;
+  }
+
+  .hero {
+    min-height: 78vh;
+    padding: 45px 5%;
+  }
+
+  .hero h1 {
+    font-size: clamp(58px,15vw,100px);
+  }
+
+  .floating {
+    font-size: 48px;
+  }
+
+  .snack2 { right: 10%; top: 48%; }
+  .snack3 { bottom: 8%; right: 10%; }
+  .snack4 { left: 2%; bottom: 20%; top: auto; }
+
+  .hero-bottom {
+    flex-direction: column;
+    align-items: start;
+    gap: 20px;
+  }
+
+  .section {
+    padding: 65px 5%;
+  }
+
+  .vending-intro {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .vending-intro p {
+    max-width: 100%;
+  }
+
+  .vending-machine {
+    padding: 12px;
+    border-radius: 16px;
+    box-shadow: 7px 7px 0 var(--ink);
+  }
+
+  .machine-top strong {
+    font-size: 18px;
+  }
+
+  .snack-grid {
+    gap: 8px;
+  }
+
+  .snack-card {
+    padding: 9px;
+    min-height: 150px;
+    border-radius: 12px;
+  }
+
+  .snack-emoji {
+    font-size: 40px;
+  }
+
+  .snack-card h3 {
+    font-size: 12px;
+  }
+
+  .snack-card p {
+    font-size: 9px;
+  }
+
+  .snack-card button {
+    padding: 7px 9px;
+    font-size: 9px;
+  }
+
+  .machine-bottom {
+    font-size: 8px;
+    gap: 8px;
+  }
+
+  .popup-card {
+    padding: 25px;
+  }
+
+  .popup-card h2 {
+    font-size: 35px;
+  }
+
+  .chocolate-wrapper {
+    max-width: 100%;
+  }
+
+  .chocolate-grid {
+    padding: 15px;
+    gap: 7px;
+  }
+
+  .choco {
+    font-size: 10px;
+  }
+
+  .contact-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .contact-text h2 {
+    font-size: 68px;
+  }
+
+  .fridge-door {
+    min-height: 270px;
+  }
+
+  footer {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="noise"></div>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="logo">AURELIA<span>®</span></div>
+  <div class="nav-right">
+    <a href="#vending">The Menu</a>
+    <a href="#chocolate">Chocolate</a>
+    <a href="#contact">Say Hello</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+
+  <div class="hero-stamp">INDEPENDENT CREATIVE STUDIO · EST. WHATEVER</div>
+
+  <h1>
+    WE MAKE<br>
+    <span class="outlined">BUSINESS</span><br>
+    LESS BORING.
+  </h1>
+
+  <div class="hero-bottom">
+    <p>
+      Your business called. It said it was tired of looking like everybody else's.
+      We brought snacks. And solutions.
+    </p>
+    <a href="#vending" class="start-btn">I'M HUNGRY FOR IDEAS ↓</a>
+  </div>
+
+  <div class="floating snack1" onclick="pop(this)">🍟</div>
+  <div class="floating snack2" onclick="pop(this)">🍩</div>
+  <div class="floating snack3" onclick="pop(this)">🍒</div>
+  <div class="floating snack4" onclick="pop(this)">🥤</div>
+
+</section>
+
+<div class="marquee">
+  <div class="marquee-track">
+    ✳ GOOD IDEAS ARE SERVED FRESH ✳ NO BLAND BRANDS ALLOWED ✳ CREATIVE CRAVINGS ONLY ✳ GOOD IDEAS ARE SERVED FRESH ✳ NO BLAND BRANDS ALLOWED ✳ CREATIVE CRAVINGS ONLY ✳
+  </div>
+</div>
+
+<!-- VENDING MACHINE -->
+<section class="section vending-section" id="vending">
+
+  <div class="vending-intro">
+    <div>
+      <div class="section-label">01 / THE VENDING MACHINE</div>
+      <h2 class="section-title">Pick your<br>problem.</h2>
+    </div>
+    <p>
+      Insert absolutely no money. Select whatever your business needs.
+      We promise the machine won't eat your coins.
+    </p>
+  </div>
+
+  <div class="vending-machine">
+
+    <div class="machine-top">
+      <span>AU—003 / FRESH IDEAS</span>
+      <strong>AURELIA MART™</strong>
+      <span>OPEN 24/7*</span>
+    </div>
+
+    <div class="snack-grid">
+
+      <div class="snack-card">
+        <span class="snack-number">A01</span>
+        <div class="snack-emoji">🍬</div>
+        <h3>IDENTITY GUM</h3>
+        <p>CHEW ON A NEW PERSONALITY</p>
+        <button onclick="showService(0)">GRAB IT ↗</button>
+      </div>
+
+      <div class="snack-card">
+        <span class="snack-number">A02</span>
+        <div class="snack-emoji">🍫</div>
+        <h3>WEB BROWNIE</h3>
+        <p>MADE TO BE CLICKED</p>
+        <button onclick="showService(1)">GRAB IT ↗</button>
+      </div>
+
+      <div class="snack-card">
+        <span class="snack-number">A03</span>
+        <div class="snack-emoji">🍿</div>
+        <h3>SCROLL STOPPERS</h3>
+        <p>NOT YOUR REGULAR CONTENT</p>
+        <button onclick="showService(2)">GRAB IT ↗</button>
+      </div>
+
+      <div class="snack-card">
+        <span class="snack-number">A04</span>
+        <div class="snack-emoji">🍭</div>
+        <h3>SOCIAL SPRINKLES</h3>
+        <p>MAKE THE INTERNET NOTICE</p>
+        <button onclick="showService(3)">GRAB IT ↗</button>
+      </div>
+
+      <div class="snack-card">
+        <span class="snack-number">A05</span>
+        <div class="snack-emoji">🌶️</div>
+        <h3>STRATEGY SAUCE</h3>
+        <p>A LITTLE SPICE, LOTS OF DIRECTION</p>
+        <button onclick="showService(4)">GRAB IT ↗</button>
+      </div>
+
+      <div class="snack-card">
+        <span class="snack-number">A06</span>
+        <div class="snack-emoji">🧃</div>
+        <h3>THE JUICE</h3>
+        <p>WHAT ARE WE ACTUALLY ABOUT?</p>
+        <button onclick="showService(5)">GRAB IT ↗</button>
+      </div>
+
+    </div>
+
+    <div class="machine-bottom">
+      <span>PLEASE DO NOT SHAKE THE MACHINE.</span>
+      <span>YOU CAN SHAKE UP YOUR BRAND THOUGH.</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- SERVICE POPUP -->
+<div class="service-popup" id="servicePopup" onclick="closeService(event)">
+  <div class="popup-card">
+    <button class="popup-close" onclick="closeService()">×</button>
+    <div class="popup-emoji" id="popupEmoji">🍬</div>
+    <div class="section-label" id="popupLabel">FRESH FROM THE MACHINE</div>
+    <h2 id="popupTitle">Something good.</h2>
+    <p id="popupText">Something really good.</p>
+    <a class="contact-btn" href="#contact" onclick="closeService()">LET'S MAKE I
